@@ -1,4 +1,4 @@
-module rosetterc
+module github.com/TorchedSammy/rosetterc
 
 go 1.16
 
