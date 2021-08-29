@@ -1,9 +1,9 @@
-module github.com/TorchedSammy/rosetterc
+module github.com/TorchedSammy/Lupine
 
 go 1.16
 
 require (
-	github.com/yuin/gopher-lua v0.0.0-20200816102855-ee81675732da
-	golang.org/x/sys v0.0.0-20210415045647-66c3f260301c
-	layeh.com/gopher-luar v1.0.8
+	github.com/yuin/gopher-lua v0.0.0-20210529063254-f4c35e4016d9
+	golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf
+	layeh.com/gopher-luar v1.0.10
 )
