@@ -11,6 +11,7 @@ import (
 	"github.com/TorchedSammy/Lupine/lupinelog"
 
 	"golang.org/x/sys/unix"
+	"github.com/yuin/gopher-lua"
 )
 
 func main() {
@@ -21,6 +22,10 @@ func main() {
 
 	fmt.Print("\u001b[2J\u001b[0;0H")
 	lupinelog.Success("Welcome to Lupine!")
+
+	l := lua.NewState()
+	l.OpenLibs()
+	l.PreloadModule("lupinelog", lupinelog.Loader)
 
 	var procflags uintptr = unix.MS_SYNC | unix.MS_NOSUID | unix.MS_NOEXEC
 	syscall.Mount("proc", "/proc", "proc", procflags, "")
@@ -40,6 +45,18 @@ func main() {
 
 	run("mount", "-o", "remount,rw", "/")
 	lupinelog.Success("Remounted / as read-writable")
+
+	files, err := os.ReadDir("/etc/rosetterc/services")
+    if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+
+    for _, f := range files {
+		err := l.DoFile("/etc/rosetterc/services/" + f.Name())
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+	}
 
 	c := make(chan os.Signal)
 	signal.Notify(c, syscall.SIGUSR1, syscall.SIGUSR2)
