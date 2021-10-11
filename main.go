@@ -42,10 +42,10 @@ func main() {
 	var devflags uintptr = unix.MS_NOSUID
 	syscall.Mount("dev", "/dev", "devtmpfs", devflags, "mode=0755")
 	lupinelog.Success("Mounted dev filesystem to /dev")
-	
+
 	run("mount", "-o", "remount,rw", "/")
 	lupinelog.Success("Remounted / as read-writable")
-	
+
 	host, err := os.ReadFile("/proc/sys/kernel/hostname")
 	if err != nil {
 		host = []byte("lupine")
