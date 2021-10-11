@@ -46,13 +46,13 @@ func main() {
 	run("mount", "-o", "remount,rw", "/")
 	lupinelog.Success("Remounted / as read-writable")
 
-	files, err := os.ReadDir("/etc/rosetterc/services")
+	files, err := os.ReadDir("/etc/lupine/services")
     if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
 
     for _, f := range files {
-		err := l.DoFile("/etc/rosetterc/services/" + f.Name())
+		err := l.DoFile("/etc/lupine/services/" + f.Name())
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
