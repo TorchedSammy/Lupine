@@ -78,8 +78,6 @@ func main() {
 			syscall.Reboot(syscall.LINUX_REBOOT_CMD_RESTART)
 		}
 	}()
-
-	run("/sbin/getty", "38400", "tty1")
 }
 
 func run(cmdstr string, args ...string) {
