@@ -42,9 +42,18 @@ func main() {
 	var devflags uintptr = unix.MS_NOSUID
 	syscall.Mount("dev", "/dev", "devtmpfs", devflags, "mode=0755")
 	lupinelog.Success("Mounted dev filesystem to /dev")
-
+	
 	run("mount", "-o", "remount,rw", "/")
 	lupinelog.Success("Remounted / as read-writable")
+	
+	host, err := os.ReadFile("/proc/sys/kernel/hostname")
+	if err != nil {
+		host = []byte("lupine")
+	}
+	hostfile, _ := os.Create("/etc/hostname")
+	hostfile.Write(host)
+
+	lupinelog.Success("Set hostname to", host)
 
 	files, err := os.ReadDir("/etc/lupine/services")
     if err != nil {
@@ -58,10 +67,10 @@ func main() {
 		}
 	}
 
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 2)
 	signal.Notify(c, syscall.SIGUSR1, syscall.SIGUSR2)
 
-	go func(){
+	go func() {
 		for range c {
 			lupinelog.Success("Goodbye o/")
 			time.Sleep(time.Second * 5)
